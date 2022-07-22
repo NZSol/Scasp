@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class TempCharacterController : MonoBehaviour
 {
+    public Vector2 moveVector = Vector2.zero;
+    public bool interacting = false;
+
     //- No proper state machine because of time constraints, setting up a local Enum to function as if there is one -\\
     enum playerState
     {
@@ -12,12 +15,12 @@ public class TempCharacterController : MonoBehaviour
         BOUNCED,
         IDLESHELL,
         MOVESHELL,
-        TREADCONTROL
+        MODULECONTROL
     }
     [SerializeField] playerState currentState = playerState.IDLE;
     void Start()
     {
-
+        currentState = playerState.IDLE;
     }
 
     #region General functions and initialization of state functions
@@ -27,16 +30,22 @@ public class TempCharacterController : MonoBehaviour
         switch (currentState)
         {
             case playerState.IDLE:
+                IDLEUpdate();
                 break;
             case playerState.MOVE:
+                MOVEUpdate();
                 break;
             case playerState.BOUNCED:
+                BOUNCEDUpdate();
                 break;
             case playerState.IDLESHELL:
+                IDLESHELLUpdate();
                 break;
             case playerState.MOVESHELL:
+                MOVESHELLUpdate();
                 break;
-            case playerState.TREADCONTROL:
+            case playerState.MODULECONTROL:
+                MODULECONTROLUpdate();
                 break;
         }
     }
@@ -47,16 +56,22 @@ public class TempCharacterController : MonoBehaviour
         switch (currentState)
         {
             case playerState.IDLE:
+                IDLEFixedUpdate();
                 break;
             case playerState.MOVE:
+                MOVEFixedUpdate();
                 break;
             case playerState.BOUNCED:
+                BOUNCEDFixedUpdate();
                 break;
             case playerState.IDLESHELL:
+                IDLESHELLFixedUpdate();
                 break;
             case playerState.MOVESHELL:
+                MOVESHELLFixedUpdate();
                 break;
-            case playerState.TREADCONTROL:
+            case playerState.MODULECONTROL:
+                MODULECONTROLFixedUpdate();
                 break;
         }
     }
@@ -65,7 +80,10 @@ public class TempCharacterController : MonoBehaviour
     #region IDLE Functions
     private void IDLEUpdate()
     {
-
+        /*Change to MOVE*/ if (moveVector != Vector2.zero)
+        {
+            currentState = playerState.MOVE;
+        }
     }
     private void IDLEFixedUpdate()
     {
@@ -75,7 +93,10 @@ public class TempCharacterController : MonoBehaviour
     #region MOVE Functions
     private void MOVEUpdate()
     {
-
+        /*Change to IDLE*/ if (moveVector == Vector2.zero)
+        {
+            currentState = playerState.IDLE;
+        }
     }
     private void MOVEFixedUpdate()
     {
@@ -113,11 +134,11 @@ public class TempCharacterController : MonoBehaviour
     }
     #endregion
     #region TREADCONTROL Functions
-    private void TREADCONTROLUpdate()
+    private void MODULECONTROLUpdate()
     {
 
     }
-    private void TREADCONTROLFixedUpdate()
+    private void MODULECONTROLFixedUpdate()
     {
 
     }
