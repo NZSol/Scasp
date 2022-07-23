@@ -7,7 +7,7 @@ public class TankScript : MonoBehaviour
 {
     Rigidbody rb;
 
-    [SerializeField] Transform turretTransform;
+    [SerializeField] Transform turretTransform, shootPoint;
 
     //these are our values for tread-based acceleration
     float rightTreadAccelValue, leftTreadAccelValue;
@@ -42,6 +42,20 @@ public class TankScript : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
     }
+
+    /*
+    public void shoot()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(shootPoint.transform.position, shootPoint.transform.forward, out hit, Mathf.Infinity))
+        {
+            if(hit.collider.gameObject.tag == enemy)
+            {
+
+            }
+        }
+    }
+    */
 
     // Update is called once per frame
     void Update()
