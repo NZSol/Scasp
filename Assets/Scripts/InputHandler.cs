@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 public class InputHandler : MonoBehaviour
 {
     private TempCharacterController myMainScript;
-    private bool interacting = false;
 
     void Start()
     {
@@ -17,11 +16,14 @@ public class InputHandler : MonoBehaviour
         if (context.started)
         {
             myMainScript.interacting = true;
+            StartCoroutine(interactingBuffer());
         }
-        else if (context.canceled)
-        {
-            myMainScript.interacting = false;
-        }
+    }
+
+    IEnumerator interactingBuffer()
+    {
+        yield return new WaitForSeconds(0.3f);
+        myMainScript.interacting = false;
     }
 
     public void Move(InputAction.CallbackContext context)
