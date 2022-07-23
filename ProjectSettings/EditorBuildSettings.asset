@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/slinkstuff/tanktest.unity
+    guid: 8608362563ab0ff4e8ef0d945a80e426
   m_configObjects: {}
