@@ -16,6 +16,7 @@ public class TankScript : MonoBehaviour
     float turretCurrentRotation, turretRotationChangeVal;
     [SerializeField] float turretRotateSpeed , turretRotateLerpSpeed;
     [SerializeField] GameObject explosion, bulletTrail;
+    [SerializeField] ParticleSystem gunSmoke;
 
     float leftThrottleVal, rightThrottleVal;
 
@@ -43,6 +44,7 @@ public class TankScript : MonoBehaviour
 
     public void shoot(CharColours colour)
     {
+        gunSmoke.Play();
         RaycastHit hit;
         if (Physics.Raycast(shootPoint.transform.position, shootPoint.transform.forward, out hit, Mathf.Infinity))
         {
@@ -91,6 +93,6 @@ public class TankScript : MonoBehaviour
         BulletLineScript trailScript = bulletLine.GetComponent<BulletLineScript>();
         trailScript.point0Point = startPoint;
         if (hitSomething) trailScript.point1Point = endPoint;
-        else trailScript.point1Point = new Vector3(startPoint.x, startPoint.y, startPoint.z * 1000f);
+        else trailScript.point1Point = shootPoint.transform.forward * 1000;
     }
 }
