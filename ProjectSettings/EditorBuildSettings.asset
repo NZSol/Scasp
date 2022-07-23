@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/slinkstuff/tanktest.unity
-    guid: 8608362563ab0ff4e8ef0d945a80e426
+    path: Assets/Scenes/LiamTestScene.unity
+    guid: c19a3b154164d3644aac650da4c6fe46
   m_configObjects: {}
