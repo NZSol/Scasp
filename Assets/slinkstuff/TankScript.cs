@@ -16,9 +16,6 @@ public class TankScript : MonoBehaviour
     float turretCurrentRotation, turretRotationChangeVal;
     [SerializeField] float turretRotateSpeed , turretRotateLerpSpeed;
 
-    //test only stuff
-    [SerializeField] Slider leftThrottle, rightThrottle, rotationThrottle;
-
     float leftThrottleVal, rightThrottleVal;
 
     #region public values
@@ -27,7 +24,7 @@ public class TankScript : MonoBehaviour
         leftThrottleVal = value;
     }
 
-    public void setRightThrottleVal(float value)
+    public void setRightTreadThrottleVal(float value)
     {
         rightThrottleVal = value;
     }
@@ -60,11 +57,6 @@ public class TankScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //for testing
-        setLeftTreadThrottleVal(leftThrottle.value);
-        setRightThrottleVal(rightThrottle.value);
-        setTurretTurnValue(rotationThrottle.value);
-        //end testing
 
         //lerp up seperate throttles, don't need to lerp full accel that way
         rightTreadAccelValue = Mathf.Lerp(rightTreadAccelValue, rightThrottleVal, Time.fixedDeltaTime * accelMultiplier);

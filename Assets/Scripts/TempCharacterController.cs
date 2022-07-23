@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TempCharacterController : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class TempCharacterController : MonoBehaviour
     [SerializeField] private float deccelerationMultiplier = 0.8f;
     [SerializeField] private float shellMovementImpairment = 0.5f;
     [SerializeField] private float shellLoadTime = 0.2f;
+    [SerializeField] private TankScript theTank = null;
+    public int playerNum = 0;
 
     public Vector2 moveVector = Vector2.zero;
     public bool interacting = false;
@@ -25,10 +28,19 @@ public class TempCharacterController : MonoBehaviour
         MOVESHELL,
         MODULECONTROL
     }
+    private CharColours myColour = CharColours.Red;
     [SerializeField] playerState currentState = playerState.IDLE;
     [SerializeField] Zone.zoneKind currentZone = Zone.zoneKind.NULL;
-    void Start()
+    void Awake()
     {
+        var God = GameObject.Find("God").GetComponent<MultiplayerHandler>();
+        playerNum = GetComponent<PlayerInput>().user.index;
+        God.Players.Add(gameObject);
+        transform.position = God.spawns[playerNum].position;
+        gameObject.GetComponent<MeshRenderer>().material = God.playerColours[playerNum];
+        playerNum = God.Players.Count;
+        myColour = (CharColours)playerNum;
+        theTank = GameObject.Find("Tank").GetComponent<TankScript>();
         rb = gameObject.GetComponent<Rigidbody>();
         currentState = playerState.IDLE;
     }
@@ -236,6 +248,7 @@ public class TempCharacterController : MonoBehaviour
         {
             case Zone.zoneKind.AIMING:
                 float aimOutput = moveVector.x;
+                theTank.setTurretTurnValue(aimOutput * 5);
                 break;
             case Zone.zoneKind.AMMO:
                 break;
@@ -244,9 +257,11 @@ public class TempCharacterController : MonoBehaviour
                 break;
             case Zone.zoneKind.TREADLEFT:
                 float leftOutput = moveVector.y;
+                theTank.setLeftTreadThrottleVal(leftOutput * 5);
                 break;
             case Zone.zoneKind.TREADRIGHT:
                 float rightOutput = moveVector.y;
+                theTank.setRightTreadThrottleVal(rightOutput * 5);
                 break;
         }
     }

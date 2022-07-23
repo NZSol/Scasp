@@ -7,7 +7,7 @@ public class InputHandler : MonoBehaviour
 {
     private TempCharacterController myMainScript;
 
-    void Start()
+    void Awake()
     {
         myMainScript = gameObject.GetComponent<TempCharacterController>();
     }
