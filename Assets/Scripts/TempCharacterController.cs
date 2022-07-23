@@ -108,6 +108,11 @@ public class TempCharacterController : MonoBehaviour
 
     void Update()
     {
+        if(moveVector != Vector2.zero)
+        {
+            Vector3 moveDir = (moveVector.x * Vector3.right) + (moveVector.y * Vector3.forward);
+            transform.GetChild(0).transform.rotation = Quaternion.Slerp(myRenderer.transform.rotation, Quaternion.LookRotation(moveDir), 0.25f);
+        }
         //Initializing update functions of states
         switch (currentState)
         {
