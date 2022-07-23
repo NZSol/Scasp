@@ -16,9 +16,33 @@ public class EnemyBase : MonoBehaviour
         target = GameObject.FindGameObjectWithTag("Tank");
     }
 
+
+    protected bool inRange()
+    {
+        float distance = Vector3.Distance(gameObject.transform.position, target.transform.position);
+        if(distance < 5)
+        {
+            return true;
+        }
+        return false;
+    }
+    protected bool condition()
+    {
+        return false;
+    }
+
+
+
     private void Update()
     {
-        Follow();
+        if (inRange() && !condition())
+        {
+            Shoot();
+        }
+        else if (!inRange() && !condition())
+        {
+            Follow();
+        }
     }
 
     /*Priority list
@@ -29,8 +53,7 @@ public class EnemyBase : MonoBehaviour
     1. Knockback
     2. Die
     */
-
-
+    public GameObject obj;
     protected void Follow()
     {
         /*
@@ -40,34 +63,41 @@ public class EnemyBase : MonoBehaviour
         4. repeat unless in range
         */
         var targetBody = target.GetComponent<Rigidbody>();
-        Vector3 targetPosition = PredictPosition(targetBody, target.transform.position);
-        Vector3.MoveTowards(transform.position, targetPosition, moveSpeed);
+        predictionTimer += Time.deltaTime;
+        if (predictionTimer > 3)
+        {
+            Vector3 predictedPosition = predictPosition(target.transform.position, target.GetComponent<Rigidbody>().velocity, 3);
+            Instantiate(obj, predictedPosition, Quaternion.Euler(Vector3.zero));
+            predictionTimer = 0;
+        }
     }
     protected float predictionTimer = 0;
-        protected Vector3 PredictPosition(Rigidbody targetBody, Vector3 targetPos)
-        {
-            Vector3 prediction = new Vector3();
-            predictionTimer += Time.deltaTime;
-            if(predictionTimer > 3)
-            {
-                predictionTimer = 0;
-                prediction = targetPos * targetBody.velocity.z;
-                Instantiate(new GameObject("temp"), prediction, Quaternion.Euler(Vector3.zero));
-            }
-            prediction = new Vector3(target.transform.position.x, target.transform.position.y, target.transform.position.z * targetBody.velocity.z);
-            return prediction;
-        }
+    protected Vector3 predictPosition(Vector3 targetPosition, Vector3 targetVelocity, float waitValue)
+    {
+        Vector3 prediction = targetPosition + targetVelocity * waitValue;
+        return prediction;
+    }
+   
 
     protected void Shoot()
     {
+        Vector3 prediction = predictPosition(target.transform.position, target.GetComponent<Rigidbody>().velocity, 1.5f);
+        if(predictionTimer < 1.5f)
+        {
+
+            
+        }
+
         /*Instructions{
         1. Get target location
-        2. Get target momentum velocity
+        2. Get target momentum velocity /
         3. Calculate position from velocity and postition
         4. Fire weapon at predicted location
             5a. Projectile travels in line
             5b. Projectile tracks player lightly
         */
+
+
     }
 
     protected void Knockback()
