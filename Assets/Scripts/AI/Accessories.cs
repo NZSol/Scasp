@@ -3,4 +3,4 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum CharColours { Blue, Red, Orange, Green}
+public enum CharColours { Blue, Red, Orange, Green, Any}
