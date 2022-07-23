@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
-    protected CharColours enemyColor = CharColours.Blue;
+    CharColours enemyColor = CharColours.Blue;
     protected float distanceFromTarget;
     protected float shootMinRange, shootMaxRange;
     protected float moveSpeed = 0.5f;
@@ -104,7 +104,7 @@ public class EnemyBase : MonoBehaviour
 
     }
 
-    protected void Knockback()
+    public void Knockback()
     {
         /*Instruction
         1. Get direction of character - target  
@@ -115,13 +115,17 @@ public class EnemyBase : MonoBehaviour
         */
     }
 
-    protected void Die()
+    public void Die()
     {
         /*
         1.Play particle effect
         2. destroy character
         3. Set ground color to splatter colour
         */
+    }
+    public CharColours getColour()
+    {
+        return enemyColor;
     }
 
 }

@@ -40,19 +40,19 @@ public class TankScript : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    /*
-    public void shoot()
+    public void shoot(CharColours colour)
     {
         RaycastHit hit;
         if (Physics.Raycast(shootPoint.transform.position, shootPoint.transform.forward, out hit, Mathf.Infinity))
         {
-            if(hit.collider.gameObject.tag == enemy)
+            if(hit.collider.gameObject.GetComponent<EnemyBase>() != null)
             {
-
+                EnemyBase enemy = hit.collider.gameObject.GetComponent<EnemyBase>();
+                if (enemy.getColour() == colour) enemy.Die();
+                else enemy.Knockback();
             }
         }
     }
-    */
 
     // Update is called once per frame
     void Update()
