@@ -8,7 +8,8 @@ public class EnemyBase : MonoBehaviour
     protected float distanceFromTarget;
     protected float shootMinRange, shootMaxRange;
     protected float moveSpeed = 0.5f;
-    GameObject target;
+    protected GameObject target, bullet, bulletSpawnPos;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -17,9 +18,8 @@ public class EnemyBase : MonoBehaviour
     }
 
 
-    protected bool inRange()
+    protected bool inRange(float distance)
     {
-        float distance = Vector3.Distance(gameObject.transform.position, target.transform.position);
         if(distance < 5)
         {
             return true;
@@ -35,11 +35,12 @@ public class EnemyBase : MonoBehaviour
 
     private void Update()
     {
-        if (inRange() && !condition())
+        distanceFromTarget = Vector3.Distance(gameObject.transform.position, target.transform.position);
+        if (inRange(distanceFromTarget) && !condition())
         {
             Shoot();
         }
-        else if (!inRange() && !condition())
+        else if (!inRange(distanceFromTarget) && !condition())
         {
             Follow();
         }
@@ -53,30 +54,24 @@ public class EnemyBase : MonoBehaviour
     1. Knockback
     2. Die
     */
-    public GameObject obj;
     protected void Follow()
     {
         /*
-        1. Get target location + velocity
-        2. Predict a position
-        3. travel for x seconds
-        4. repeat unless in range
+        /. Get target location + velocity 
+        /. Predict a position 
+        /. travel for x seconds 
+        /. repeat unless in range 
         */
         var targetBody = target.GetComponent<Rigidbody>();
         predictionTimer += Time.deltaTime;
         if (predictionTimer > 3)
         {
-            Vector3 predictedPosition = predictMovePosition(target.transform.position, target.GetComponent<Rigidbody>().velocity, 3);
-            Instantiate(obj, predictedPosition, Quaternion.Euler(Vector3.zero));
+            Vector3 predictedPosition = predictPosition(target.transform.position, target.GetComponent<Rigidbody>().velocity, 3);
             predictionTimer = 0;
         }
     }
     protected float predictionTimer = 0;
-    protected Vector3 predictMovePosition(Vector3 targetPosition, Vector3 targetVelocity, float waitValue)
-    {
-        Vector3 prediction = targetPosition + targetVelocity * waitValue;
-        return prediction;
-    }   protected Vector3 predictAimPosition(Vector3 targetPosition, Vector3 targetVelocity, float waitValue)
+    protected Vector3 predictPosition(Vector3 targetPosition, Vector3 targetVelocity, float waitValue)
     {
         Vector3 prediction = targetPosition + targetVelocity * waitValue;
         return prediction;
@@ -85,19 +80,19 @@ public class EnemyBase : MonoBehaviour
 
     protected void Shoot()
     {
-        Vector3 prediction = predictAimPosition(target.transform.position, target.GetComponent<Rigidbody>().velocity, 1.5f);
+        Vector3 prediction = predictPosition(target.transform.position, target.GetComponent<Rigidbody>().velocity, 1.5f);
         if(predictionTimer < 1.5f)
         {
-
-            
+            Projectile projectileClass = Instantiate(bullet, bulletSpawnPos.transform.position, transform.rotation).GetComponent<Projectile>();
+            projectileClass.SetDirection(transform.forward);
         }
 
         /*Instructions{
-        1. Get target location
-        2. Get target momentum velocity /
-        3. Calculate position from velocity and postition 
-        4. Fire weapon at predicted location
-            5a. Projectile travels in line
+        /. Get target location 
+        /. Get target momentum velocity 
+        /. Calculate position from velocity and postition  
+        /. Fire weapon at predicted location 
+            /5a. Projectile travels in line 
             5b. Projectile tracks player lightly
         */
 
