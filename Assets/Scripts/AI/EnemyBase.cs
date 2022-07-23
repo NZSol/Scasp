@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
-    protected CharColours enemyColor = CharColours.Blue;
+    protected CharColours enemyColor = CharColours.Any;
     protected float distanceFromTarget;
     protected float predictionChase = 10, predictionShoot = 1.5f;
     protected float moveSpeed;
+    [SerializeField]
     protected GameObject target, bullet, bulletSpawnPos;
     [SerializeField] GameObject obj;
     

@@ -9,11 +9,13 @@ public class Buff : EnemyBase
 
     void Start()
     {
-        enemyColor = (CharColours)Random.Range(0, 5);
-        moveSpeed = 0.01f;
+        do
+        {
+            enemyColor = (CharColours)Random.Range(0, 4);
+        } while ((int)enemyColor < 0 || (int)enemyColor > 3);
         gameObject.GetComponent<Renderer>().material = mats[(int)enemyColor];
+        moveSpeed = 0.01f;
 
-        
     }
     
 }
