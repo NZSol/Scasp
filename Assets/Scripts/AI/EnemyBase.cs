@@ -2,33 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase : MonoBehaviour
+public abstract class EnemyBase : MonoBehaviour
 {
     protected CharColours enemyColor = CharColours.Any;
     protected float distanceFromTarget;
     protected float predictionChase = 10, predictionShoot = 1.5f;
     protected float moveSpeed;
-    [SerializeField]
     protected GameObject target, bullet, bulletSpawnPos;
-    [SerializeField] GameObject obj;
     
     public CharColours getColour()
     {
         return enemyColor;
     }
 
-
-    // Start is called before the first frame update
-    void Start()
+    protected void Awake()
     {
         target = GameObject.FindGameObjectWithTag("Tank");
-        predictionChase = Random.Range(4, 10);
+        StartAlt();
     }
+
+    protected abstract void StartAlt();
+
 
 
     protected bool inRange(float distance)
     {
-        if(distance < 15)
+        if(distance < 50)
         {
             return true;
         }
@@ -39,16 +38,29 @@ public class EnemyBase : MonoBehaviour
         return false;
     }
 
+    protected bool inShootRange(float distance)
+    {
+        if (distance < 15)
+            return true;
+        else
+            return false;
+    }
+
 
 
     protected void Update()
     {
         distanceFromTarget = Vector3.Distance(gameObject.transform.position, target.transform.position);
-        if (inRange(distanceFromTarget) && !condition())
+        if (inRange(distanceFromTarget) && inShootRange(distanceFromTarget) && !condition())
         {
             Shoot();
             print("Shooting");
-            predictionTimer = predictionChase;
+            if(predictionTimer < predictionChase)
+                predictionTimer = predictionChase + 5;
+        }
+        else if (inRange(distanceFromTarget) && !inShootRange(distanceFromTarget) && !condition())
+        {
+            Hunt();
         }
         else if (!inRange(distanceFromTarget) && !condition())
         {
@@ -65,6 +77,11 @@ public class EnemyBase : MonoBehaviour
     1. Knockback
     2. Die
     */
+    protected void Hunt()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, moveSpeed);
+    }
+
     Vector3 predictedPosition = new Vector3();
     protected void Follow()
     {
@@ -86,8 +103,9 @@ public class EnemyBase : MonoBehaviour
     protected float predictionTimer = 0;
     protected Vector3 predictPosition(Vector3 targetPosition, Vector3 targetVelocity, float waitValue)
     {
-        Vector3 prediction = targetPosition + targetVelocity * waitValue;
-        Instantiate(obj, prediction, transform.rotation);
+        float predictionDeviation = Random.Range(0.5f, 2f);
+        Vector3 prediction = targetPosition + targetVelocity * (waitValue * predictionDeviation);
+        //Instantiate(obj, prediction, transform.rotation);
         return prediction;
     }
    

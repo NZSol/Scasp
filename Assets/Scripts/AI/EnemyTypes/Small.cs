@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class Small : EnemyBase
 {
-    private void Start()
+    protected override void StartAlt()
     {
-        moveSpeed = 0.025f;
-        enemyColor = CharColours.Any; 
+        moveSpeed = Random.Range(0.025f, 0.06f);
+        predictionChase = Random.Range(2, 6);
+        predictionShoot = Random.Range(1, 5);
+        enemyColor = CharColours.Any;
+        print(moveSpeed);
     }
 }
