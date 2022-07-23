@@ -17,7 +17,7 @@ public class TankScript : MonoBehaviour
     [SerializeField] float turretRotateSpeed , turretRotateLerpSpeed;
     [SerializeField] GameObject explosion, bulletTrail;
     [SerializeField] ParticleSystem gunSmoke;
-
+    [SerializeField] Transform cockpitScreenTankBaseRep;
     float leftThrottleVal, rightThrottleVal;
 
     #region public values
@@ -79,6 +79,7 @@ public class TankScript : MonoBehaviour
         //turret rotation
         turretCurrentRotation = Mathf.Lerp(turretCurrentRotation, turretRotationChangeVal, Time.deltaTime * turretRotateLerpSpeed);
         turretTransform.RotateAround(turretTransform.position, turretTransform.up, turretCurrentRotation * turretRotateSpeed * Time.deltaTime);
+        cockpitScreenTankBaseRep.RotateAround(cockpitScreenTankBaseRep.position, Vector3.up, (turretCurrentRotation * -1) * turretRotateSpeed * Time.deltaTime);
 
     }
 

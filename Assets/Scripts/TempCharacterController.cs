@@ -13,6 +13,8 @@ public class TempCharacterController : MonoBehaviour
     [SerializeField] private float shellLoadTime = 0.2f;
     [SerializeField] private TankScript theTank = null;
     [SerializeField] private MeshRenderer myRenderer;
+    private GameObject God; //sorry liam
+    private MultiplayerHandler MPHandler;
     public int playerNum = 0;
 
     public Vector2 moveVector = Vector2.zero;
@@ -34,12 +36,13 @@ public class TempCharacterController : MonoBehaviour
     [SerializeField] Zone.zoneKind currentZone = Zone.zoneKind.NULL;
     void Awake()
     {
-        var God = GameObject.Find("God").GetComponent<MultiplayerHandler>();
+        God = GameObject.Find("God");
+        MPHandler = God.GetComponent<MultiplayerHandler>();
         playerNum = GetComponent<PlayerInput>().user.index;
-        God.Players.Add(gameObject);
-        transform.position = God.spawns[playerNum].position;
-        myRenderer.material = God.playerColours[playerNum];
-        playerNum = God.Players.Count;
+        MPHandler.Players.Add(gameObject);
+        transform.position = MPHandler.spawns[playerNum].position;
+        myRenderer.material = MPHandler.playerColours[playerNum];
+        playerNum = MPHandler.Players.Count;
         myColour = (CharColours)playerNum;
         theTank = GameObject.Find("Tank").GetComponent<TankScript>();
         rb = gameObject.GetComponent<Rigidbody>();
@@ -81,6 +84,8 @@ public class TempCharacterController : MonoBehaviour
                             other.GetComponent<Zone>().occupied = true;
                             targetZone = other.GetComponent<Zone>();
                             currentState = playerState.MODULECONTROL;
+                            //slinky here this does the spinny lights!!
+                            God.GetComponent<spinnyLightsScript>().activateSpinnyLights(myColour, 3);
                         }
                         break;
                     case Zone.zoneKind.TREADLEFT:
