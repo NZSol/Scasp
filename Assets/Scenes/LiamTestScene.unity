@@ -235,7 +235,7 @@ GameObject:
   - component: {fileID: 197722469}
   m_Layer: 0
   m_Name: "The Left Tread Zone\u2122\uFE0F"
-  m_TagString: Untagged
+  m_TagString: ActionZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -267,7 +267,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dd37637ea72dc94b8f9a7c70550eb49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myZone: 1
+  myZone: 2
+  occupied: 0
 --- !u!65 &197722470
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -276,7 +277,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 197722467}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -346,7 +347,7 @@ GameObject:
   - component: {fileID: 379999882}
   m_Layer: 0
   m_Name: "The Shell Zone\u2122\uFE0F"
-  m_TagString: Untagged
+  m_TagString: ActionZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -378,7 +379,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dd37637ea72dc94b8f9a7c70550eb49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myZone: 3
+  myZone: 4
+  occupied: 0
 --- !u!135 &379999883
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -802,7 +804,7 @@ GameObject:
   - component: {fileID: 1515576782}
   m_Layer: 0
   m_Name: "The Load Zone\u2122\uFE0F"
-  m_TagString: Untagged
+  m_TagString: ActionZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -834,7 +836,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dd37637ea72dc94b8f9a7c70550eb49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myZone: 4
+  myZone: 5
+  occupied: 0
 --- !u!135 &1515576783
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1011,7 +1014,7 @@ GameObject:
   - component: {fileID: 1659131684}
   m_Layer: 0
   m_Name: "The Aim Zone\u2122\uFE0F"
-  m_TagString: Untagged
+  m_TagString: ActionZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1043,7 +1046,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dd37637ea72dc94b8f9a7c70550eb49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myZone: 2
+  myZone: 3
+  occupied: 0
 --- !u!135 &1659131685
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1144,9 +1148,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movespeedCap: 10
   acceleration: 8
+  deccelerationMultiplier: 0.8
+  shellMovementImpairment: 0.5
+  shellLoadTime: 0.5
   moveVector: {x: 0, y: 0}
   interacting: 0
   currentState: 0
+  currentZone: 0
 --- !u!54 &1993867452
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1331,7 +1339,7 @@ GameObject:
   - component: {fileID: 2105943843}
   m_Layer: 0
   m_Name: "The Right Tread Zone\u2122\uFE0F"
-  m_TagString: Untagged
+  m_TagString: ActionZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1363,7 +1371,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dd37637ea72dc94b8f9a7c70550eb49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myZone: 0
+  myZone: 1
+  occupied: 0
 --- !u!65 &2105943844
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1372,7 +1381,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2105943841}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
