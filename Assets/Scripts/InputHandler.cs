@@ -16,7 +16,10 @@ public class InputHandler : MonoBehaviour
         if (context.started)
         {
             myMainScript.interacting = true;
-            StartCoroutine(interactingBuffer());
+        }
+        if (context.canceled)
+        {
+            myMainScript.interacting = false;
         }
     }
 

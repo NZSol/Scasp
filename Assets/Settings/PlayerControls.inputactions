@@ -138,7 +138,7 @@
                 {
                     "name": "",
                     "id": "01a8dd3e-79d6-408c-b27b-7f3bb18c8e68",
-                    "path": "<Gamepad>/rightTrigger",
+                    "path": "<XInputController>/buttonSouth",
                     "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "Controller",
