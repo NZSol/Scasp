@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LiamTestScene.unity
     guid: c19a3b154164d3644aac650da4c6fe46
+  - enabled: 1
+    path: Assets/Scenes/DBZFusionScene.unity
+    guid: 7388b306586f2d4469ed5c4a33805083
   m_configObjects: {}

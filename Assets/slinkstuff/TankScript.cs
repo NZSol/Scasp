@@ -15,6 +15,7 @@ public class TankScript : MonoBehaviour
 
     float turretCurrentRotation, turretRotationChangeVal;
     [SerializeField] float turretRotateSpeed , turretRotateLerpSpeed;
+    [SerializeField] GameObject explosion, bulletTrail;
 
     float leftThrottleVal, rightThrottleVal;
 
@@ -45,12 +46,19 @@ public class TankScript : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(shootPoint.transform.position, shootPoint.transform.forward, out hit, Mathf.Infinity))
         {
+            createNewBulletLine(shootPoint.position, hit.point, true);
+            Instantiate(explosion, hit.point, Quaternion.identity);
             if(hit.collider.gameObject.GetComponent<EnemyBase>() != null)
             {
                 EnemyBase enemy = hit.collider.gameObject.GetComponent<EnemyBase>();
                 if (enemy.getColour() == colour) enemy.Die();
                 else enemy.Knockback();
             }
+        }
+        else
+        {
+            Debug.Log("HA!!!");
+            createNewBulletLine(shootPoint.position, hit.point, false);
         }
     }
 
@@ -75,5 +83,14 @@ public class TankScript : MonoBehaviour
     private void FixedUpdate()
     {
         if (rb.velocity.magnitude < topSpeed) rb.velocity = transform.forward * (leftTreadAccelValue + rightTreadAccelValue);
+    }
+
+    void createNewBulletLine(Vector3 startPoint, Vector3 endPoint, bool hitSomething)
+    {
+        GameObject bulletLine = Instantiate(bulletTrail, Vector3.zero, new Quaternion(0, 0, 0, 0));
+        BulletLineScript trailScript = bulletLine.GetComponent<BulletLineScript>();
+        trailScript.point0Point = startPoint;
+        if (hitSomething) trailScript.point1Point = endPoint;
+        else trailScript.point1Point = new Vector3(startPoint.x, startPoint.y, startPoint.z * 1000f);
     }
 }

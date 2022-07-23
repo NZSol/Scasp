@@ -12,6 +12,7 @@ public class TempCharacterController : MonoBehaviour
     [SerializeField] private float shellMovementImpairment = 0.5f;
     [SerializeField] private float shellLoadTime = 0.2f;
     [SerializeField] private TankScript theTank = null;
+    [SerializeField] private MeshRenderer myRenderer;
     public int playerNum = 0;
 
     public Vector2 moveVector = Vector2.zero;
@@ -37,7 +38,7 @@ public class TempCharacterController : MonoBehaviour
         playerNum = GetComponent<PlayerInput>().user.index;
         God.Players.Add(gameObject);
         transform.position = God.spawns[playerNum].position;
-        gameObject.GetComponent<MeshRenderer>().material = God.playerColours[playerNum];
+        myRenderer.material = God.playerColours[playerNum];
         playerNum = God.Players.Count;
         myColour = (CharColours)playerNum;
         theTank = GameObject.Find("Tank").GetComponent<TankScript>();
@@ -54,7 +55,6 @@ public class TempCharacterController : MonoBehaviour
         {
             if (other.tag == "ActionZone" && other.GetComponent<Zone>().occupied == false)
             {
-                interacting = false;
                 switch (other.GetComponent<Zone>().myZone)
                 {
                     case Zone.zoneKind.AIMING:
@@ -237,9 +237,8 @@ public class TempCharacterController : MonoBehaviour
     private void MODULECONTROLUpdate()
     {
         rb.velocity = rb.velocity * deccelerationMultiplier;
-        if (interacting)
+        if (!interacting)
         {
-            interacting = false;
             targetZone.occupied = false;
             currentZone = Zone.zoneKind.NULL;
             currentState = playerState.IDLE;
@@ -273,6 +272,7 @@ public class TempCharacterController : MonoBehaviour
     IEnumerator waitForSeconds(float seconds)
     {
         yield return new WaitForSeconds(seconds);
+        theTank.shoot(myColour);
         targetZone.occupied = false;
         currentZone = Zone.zoneKind.NULL;
         currentState = playerState.IDLE;
