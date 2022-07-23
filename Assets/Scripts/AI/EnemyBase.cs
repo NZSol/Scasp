@@ -7,13 +7,18 @@ public class EnemyBase : MonoBehaviour
     protected CharColours enemyColor = CharColours.Blue;
     protected float distanceFromTarget;
     protected float shootMinRange, shootMaxRange;
-    protected float moveSpeed;
+    protected float moveSpeed = 0.5f;
     GameObject target;
 
     // Start is called before the first frame update
     void Start()
     {
         target = GameObject.FindGameObjectWithTag("Tank");
+    }
+
+    private void Update()
+    {
+        Follow();
     }
 
     /*Priority list
@@ -35,20 +40,21 @@ public class EnemyBase : MonoBehaviour
         4. repeat unless in range
         */
         var targetBody = target.GetComponent<Rigidbody>();
-        Vector3.MoveTowards(transform.position, PredictPosition(targetBody), moveSpeed);
+        Vector3 targetPosition = PredictPosition(targetBody, target.transform.position);
+        Vector3.MoveTowards(transform.position, targetPosition, moveSpeed);
     }
     protected float predictionTimer = 0;
-        protected Vector3 PredictPosition(Rigidbody targetBody)
+        protected Vector3 PredictPosition(Rigidbody targetBody, Vector3 targetPos)
         {
             Vector3 prediction = new Vector3();
             predictionTimer += Time.deltaTime;
             if(predictionTimer > 3)
             {
                 predictionTimer = 0;
-                PredictPosition(targetBody);
+                prediction = targetPos * targetBody.velocity.z;
+                Instantiate(new GameObject("temp"), prediction, Quaternion.Euler(Vector3.zero));
             }
             prediction = new Vector3(target.transform.position.x, target.transform.position.y, target.transform.position.z * targetBody.velocity.z);
-        Instantiate(new GameObject("temp"));
             return prediction;
         }
 
