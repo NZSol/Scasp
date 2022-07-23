@@ -66,13 +66,17 @@ public class EnemyBase : MonoBehaviour
         predictionTimer += Time.deltaTime;
         if (predictionTimer > 3)
         {
-            Vector3 predictedPosition = predictPosition(target.transform.position, target.GetComponent<Rigidbody>().velocity, 3);
+            Vector3 predictedPosition = predictMovePosition(target.transform.position, target.GetComponent<Rigidbody>().velocity, 3);
             Instantiate(obj, predictedPosition, Quaternion.Euler(Vector3.zero));
             predictionTimer = 0;
         }
     }
     protected float predictionTimer = 0;
-    protected Vector3 predictPosition(Vector3 targetPosition, Vector3 targetVelocity, float waitValue)
+    protected Vector3 predictMovePosition(Vector3 targetPosition, Vector3 targetVelocity, float waitValue)
+    {
+        Vector3 prediction = targetPosition + targetVelocity * waitValue;
+        return prediction;
+    }   protected Vector3 predictAimPosition(Vector3 targetPosition, Vector3 targetVelocity, float waitValue)
     {
         Vector3 prediction = targetPosition + targetVelocity * waitValue;
         return prediction;
@@ -81,7 +85,7 @@ public class EnemyBase : MonoBehaviour
 
     protected void Shoot()
     {
-        Vector3 prediction = predictPosition(target.transform.position, target.GetComponent<Rigidbody>().velocity, 1.5f);
+        Vector3 prediction = predictAimPosition(target.transform.position, target.GetComponent<Rigidbody>().velocity, 1.5f);
         if(predictionTimer < 1.5f)
         {
 
@@ -91,7 +95,7 @@ public class EnemyBase : MonoBehaviour
         /*Instructions{
         1. Get target location
         2. Get target momentum velocity /
-        3. Calculate position from velocity and postition
+        3. Calculate position from velocity and postition 
         4. Fire weapon at predicted location
             5a. Projectile travels in line
             5b. Projectile tracks player lightly
