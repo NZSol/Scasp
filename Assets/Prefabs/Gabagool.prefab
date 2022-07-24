@@ -233,6 +233,7 @@ MonoBehaviour:
   shellLoadTime: 0.5
   theTank: {fileID: 0}
   myRenderer: {fileID: 3914055564378899857}
+  anim: {fileID: 5054682149073189109}
   playerNum: 0
   moveVector: {x: 0, y: 0}
   interacting: 0

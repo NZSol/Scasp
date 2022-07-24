@@ -13,6 +13,7 @@ public class TempCharacterController : MonoBehaviour
     [SerializeField] private float shellLoadTime = 0.2f;
     [SerializeField] private TankScript theTank = null;
     [SerializeField] private SkinnedMeshRenderer myRenderer;
+    [SerializeField] Animator anim;
     private GameObject God; //sorry liam
     private MultiplayerHandler MPHandler;
     public int playerNum = 0;
@@ -172,6 +173,7 @@ public class TempCharacterController : MonoBehaviour
     #region IDLE Functions
     private void IDLEUpdate()
     {
+        anim.SetInteger("STATE", 0);
         /*Change to MOVE*/ if (moveVector != Vector2.zero)
         {
             currentState = playerState.MOVE;
@@ -185,7 +187,9 @@ public class TempCharacterController : MonoBehaviour
     #region MOVE Functions
     private void MOVEUpdate()
     {
-        /*Change to IDLE*/ if (moveVector == Vector2.zero)
+        anim.SetInteger("STATE", 1);
+        /*Change to IDLE*/
+        if (moveVector == Vector2.zero)
         {
             currentState = playerState.IDLE;
         }
@@ -213,6 +217,7 @@ public class TempCharacterController : MonoBehaviour
     #region IDLESHELL Functions
     private void IDLESHELLUpdate()
     {
+        anim.SetInteger("STATE", 2);
         /*Change to MOVESHELL*/
         if (moveVector != Vector2.zero)
         {
@@ -227,6 +232,7 @@ public class TempCharacterController : MonoBehaviour
     #region MOVESHELL Functions
     private void MOVESHELLUpdate()
     {
+        anim.SetInteger("STATE", 3);
         /*Change to IDLESHELL*/
         if (moveVector == Vector2.zero)
         {

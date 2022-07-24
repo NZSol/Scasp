@@ -8,4 +8,5 @@ public class MultiplayerHandler : MonoBehaviour
     public Transform[] spawns;
     public Material[] playerColours;
     public bool gameStarted;
+    public GameObject[] ears;
 }
