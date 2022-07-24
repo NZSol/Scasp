@@ -7,4 +7,5 @@ public class MultiplayerHandler : MonoBehaviour
     public List<GameObject> Players;
     public Transform[] spawns;
     public Material[] playerColours;
+    public bool gameStarted;
 }

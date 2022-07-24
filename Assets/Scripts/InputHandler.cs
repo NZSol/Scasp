@@ -11,6 +11,19 @@ public class InputHandler : MonoBehaviour
     {
         myMainScript = gameObject.GetComponent<TempCharacterController>();
     }
+
+    public void startGame(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            var god = GameObject.Find("God");
+            if (!god.GetComponent<MultiplayerHandler>().gameStarted)
+            {
+                god.GetComponent<RoundHandler>().startGame();
+            }
+        }
+    }
+
     public void Interact(InputAction.CallbackContext context)
     {
         if (context.started)

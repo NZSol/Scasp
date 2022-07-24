@@ -212,6 +212,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: aeb88625-89c2-4afa-83dd-207df84fc32f
     m_ActionName: Default/Interact[/DualShock4GamepadHID/rightTrigger,/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2032055368217062501}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
+        m_MethodName: startGame
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a23b9760-6401-4afe-a9fb-2cee9093c868
+    m_ActionName: Default/Start[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Default
