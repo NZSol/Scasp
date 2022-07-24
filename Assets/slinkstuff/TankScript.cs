@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI; //only need this for test UI sliders
 
 public class TankScript : MonoBehaviour
@@ -106,7 +107,13 @@ public class TankScript : MonoBehaviour
         {
             //PARTICLE EFFECT>????!??{!?>!?!?!??>!
             Destroy(gameObject);
+            Invoke("reloadScene", 3);
             //INVOKE END GAME!!!!!!
         }
+    }
+
+    void reloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

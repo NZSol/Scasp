@@ -28,6 +28,7 @@ public class Projectile : MonoBehaviour
         if (collision.gameObject.tag == "Tank")
         {
             collision.gameObject.GetComponent<TankScript>().reduceHealth();
+            Destroy(gameObject);
         }
 
     }
