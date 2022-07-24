@@ -8,7 +8,9 @@ public abstract class EnemyBase : MonoBehaviour
     protected float distanceFromTarget;
     protected float predictionChase = 10, predictionShoot = 1.5f;
     protected float moveSpeed;
-    protected GameObject target, bullet, bulletSpawnPos;
+    [SerializeField]
+    protected GameObject bullet;
+    protected GameObject target;
     
     public CharColours getColour()
     {
@@ -54,9 +56,6 @@ public abstract class EnemyBase : MonoBehaviour
         if (inRange(distanceFromTarget) && inShootRange(distanceFromTarget) && !condition())
         {
             Shoot();
-            print("Shooting");
-            if(predictionTimer < predictionChase)
-                predictionTimer = predictionChase + 5;
         }
         else if (inRange(distanceFromTarget) && !inShootRange(distanceFromTarget) && !condition())
         {
@@ -65,7 +64,6 @@ public abstract class EnemyBase : MonoBehaviour
         else if (!inRange(distanceFromTarget) && !condition())
         {
             Follow();
-            print("Moving to position");
         }
     }
 
@@ -80,18 +78,12 @@ public abstract class EnemyBase : MonoBehaviour
     protected void Hunt()
     {
         transform.position = Vector3.MoveTowards(transform.position, target.transform.position, moveSpeed);
+        transform.LookAt(target.transform.position);
     }
 
     Vector3 predictedPosition = new Vector3();
     protected void Follow()
     {
-        /*
-        /. Get target location + velocity 
-        /. Predict a position 
-        /. travel for x seconds 
-        /. repeat unless in range 
-        */
-        var targetBody = target.GetComponent<Rigidbody>();
         predictionTimer += Time.deltaTime;
         if (predictionTimer > predictionChase)
         {
@@ -105,7 +97,6 @@ public abstract class EnemyBase : MonoBehaviour
     {
         float predictionDeviation = Random.Range(0.5f, 2f);
         Vector3 prediction = targetPosition + targetVelocity * (waitValue * predictionDeviation);
-        //Instantiate(obj, prediction, transform.rotation);
         return prediction;
     }
    
@@ -113,10 +104,13 @@ public abstract class EnemyBase : MonoBehaviour
     protected void Shoot()
     {
         Vector3 prediction = predictPosition(target.transform.position, target.GetComponent<Rigidbody>().velocity, predictionShoot);
-        if(predictionTimer < predictionShoot)
+        predictionTimer += Time.deltaTime;
+        if(predictionTimer > predictionShoot)
         {
-            Projectile projectileClass = Instantiate(bullet, bulletSpawnPos.transform.position, transform.rotation).GetComponent<Projectile>();
+            print("hit");
+            Projectile projectileClass = Instantiate(bullet, transform.position + transform.forward, transform.rotation).GetComponent<Projectile>();
             projectileClass.SetDirection(transform.forward);
+            predictionTimer -= predictionTimer;
         }
 
         /*Instructions{
@@ -144,11 +138,8 @@ public abstract class EnemyBase : MonoBehaviour
 
     public void Die()
     {
-        /*
-        1.Play particle effect
-        2. destroy character
-        3. Set ground color to splatter colour
-        */
+        //INVOKME DIEiEIE???!!?!!??!?!?!?!?!?!?
+        Destroy(gameObject);
     }
 
 }

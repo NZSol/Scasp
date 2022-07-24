@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,9 +15,13 @@ public enum wave
 
 public class Spawning : MonoBehaviour
 {
+    GameObject target;
+    [SerializeField]
+    Transform[] spawnPoints;
     [SerializeField]
     GameObject SmallHostile, BigHostile;
     RoundHandler handler;
+    MultiplayerHandler MHandler;
     int smallEnemiesWave;
     int largeEnemiesWave;
 
@@ -25,12 +30,14 @@ public class Spawning : MonoBehaviour
 
 
     float spawnTime;
-    float waveCounter = 300;
     
 
     private void Start()
     {
+        target = GameObject.FindGameObjectWithTag("Tank");
         handler = GameObject.Find("God").GetComponent<RoundHandler>();
+        MHandler = handler.gameObject.GetComponent<MultiplayerHandler>();
+        spawnPoints = gameObject.GetComponentsInChildren<Transform>();
         SetEnemiesToSpawn();
     }
     void SetEnemiesToSpawn()
@@ -46,12 +53,13 @@ public class Spawning : MonoBehaviour
 
     private void Update()
     {
-        if (handler.currentTime % 60 / spawnTime == 0)
+        if (handler.currentTime % spawnTime == 0 && MHandler.gameStarted && !PauseSpawn)
         {
+            // print($"scene timer = {handler.currentTime} % (60 / spawnTime));
             PauseSpawn = true;
             Spawn();
         }
-        else if (handler.currentTime % 60 / spawnTime != 0 && PauseSpawn)
+        else if (handler.currentTime % spawnTime != 0 && PauseSpawn)
             PauseSpawn = false;
 
 
@@ -66,12 +74,25 @@ public class Spawning : MonoBehaviour
         }
     }
 
+    Vector3 GetSpawnPoint()
+    {
+        float distance;
+        Vector3 targetSpawn;
+        do
+        {
+            targetSpawn = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)].position;
+            distance = Vector3.Distance(targetSpawn, target.transform.position);
+
+        } while (distance < 50);
+        return targetSpawn;
+    }
 
     void Spawn()
     {
-
+        for (int i = 0; i < 2; i++)
+        {
+            Instantiate(SmallHostile, GetSpawnPoint(), transform.rotation);
+            Instantiate(BigHostile, GetSpawnPoint(), transform.rotation);
+        }
     }
-
-
-
 }
