@@ -9,4 +9,5 @@ public class MultiplayerHandler : MonoBehaviour
     public Material[] playerColours;
     public bool gameStarted;
     public GameObject[] ears;
+    public Color[] playerUIColours;
 }

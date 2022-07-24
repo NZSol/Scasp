@@ -15,6 +15,7 @@ public class TempCharacterController : MonoBehaviour
     [SerializeField] private SkinnedMeshRenderer myRenderer;
     [SerializeField] private Transform headPlacementPoint;
     [SerializeField] Animator anim;
+    [SerializeField] private SpriteRenderer circleSprite;
     private GameObject God; //sorry liam
     private MultiplayerHandler MPHandler;
     public int playerNum = 0;
@@ -45,6 +46,7 @@ public class TempCharacterController : MonoBehaviour
         transform.position = MPHandler.spawns[playerNum].position;
         myRenderer.material = MPHandler.playerColours[playerNum];
         Instantiate(MPHandler.ears[playerNum], headPlacementPoint);
+        circleSprite.color = MPHandler.playerUIColours[playerNum];
         playerNum = MPHandler.Players.Count;
         myColour = (CharColours)playerNum;
         theTank = GameObject.Find("Tank").GetComponent<TankScript>();

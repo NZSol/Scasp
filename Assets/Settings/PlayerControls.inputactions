@@ -147,7 +147,7 @@
                 {
                     "name": "",
                     "id": "01a8dd3e-79d6-408c-b27b-7f3bb18c8e68",
-                    "path": "<XInputController>/buttonSouth",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "Controller",
@@ -169,7 +169,7 @@
                 {
                     "name": "",
                     "id": "e76bedf3-9024-4109-8697-65f62ed7a953",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/enter",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
