@@ -10,7 +10,8 @@ public class SlonkysDebugTank : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        script = GetComponent<TankScript>();   
+        script = GetComponent<TankScript>();
+        print(240 % 60/9);
     }
 
     // Update is called once per frame
