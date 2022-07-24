@@ -113,7 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 4696169711324866650, guid: fd9f270fa2e47f4499a3d757d11f6c54, type: 3}
   mats:
-  - {fileID: 2100000, guid: f18dde73491aac64c814dee5fe08e4a9, type: 2}
-  - {fileID: 2100000, guid: f9bbb6369275feb4f9e8a4fdec4874b8, type: 2}
+  - {fileID: 2100000, guid: b825aa888818de043b9a57c5a8ad4fb4, type: 2}
+  - {fileID: 2100000, guid: 387b4443f9242cd4491b6a1b96f2fdfd, type: 2}
   - {fileID: 2100000, guid: edd07e206fee50c42a61701bae429f2c, type: 2}
   - {fileID: 2100000, guid: 0ee01efa41b4b6242b1ad11bbd75571c, type: 2}

@@ -55,7 +55,7 @@ public class TankScript : MonoBehaviour
             if(hit.collider.gameObject.GetComponent<EnemyBase>() != null)
             {
                 EnemyBase enemy = hit.collider.gameObject.GetComponent<EnemyBase>();
-                if (enemy.getColour() == colour) enemy.Die();
+                if (enemy.getColour() == colour || enemy.getColour() == CharColours.Any) enemy.Die();
                 else enemy.Knockback();
             }
         }
