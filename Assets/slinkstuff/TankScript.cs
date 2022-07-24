@@ -20,6 +20,8 @@ public class TankScript : MonoBehaviour
     [SerializeField] Transform cockpitScreenTankBaseRep;
     float leftThrottleVal, rightThrottleVal;
 
+    int health = 5;
+
     #region public values
     public void setLeftTreadThrottleVal(float value)
     {
@@ -95,5 +97,16 @@ public class TankScript : MonoBehaviour
         trailScript.point0Point = startPoint;
         if (hitSomething) trailScript.point1Point = endPoint;
         else trailScript.point1Point = shootPoint.transform.forward * 1000;
+    }
+
+    public void reduceHealth()
+    {
+        health--;
+        if(health == 0)
+        {
+            //PARTICLE EFFECT>????!??{!?>!?!?!??>!
+            Destroy(gameObject);
+            //INVOKE END GAME!!!!!!
+        }
     }
 }
