@@ -12,7 +12,7 @@ public class TempCharacterController : MonoBehaviour
     [SerializeField] private float shellMovementImpairment = 0.5f;
     [SerializeField] private float shellLoadTime = 0.2f;
     [SerializeField] private TankScript theTank = null;
-    [SerializeField] private MeshRenderer myRenderer;
+    [SerializeField] private SkinnedMeshRenderer myRenderer;
     private GameObject God; //sorry liam
     private MultiplayerHandler MPHandler;
     public int playerNum = 0;
