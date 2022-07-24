@@ -6,11 +6,12 @@ public abstract class EnemyBase : MonoBehaviour
 {
     protected CharColours enemyColor = CharColours.Any;
     protected float distanceFromTarget;
-    protected float predictionChase = 10, predictionShoot = 1.5f;
+    protected float predictionChase = 3, predictionShoot = 1.5f;
     protected float moveSpeed;
     [SerializeField]
     protected GameObject bullet;
     protected GameObject target;
+    Rigidbody rb;
     
     public CharColours getColour()
     {
@@ -77,7 +78,7 @@ public abstract class EnemyBase : MonoBehaviour
     */
     protected void Hunt()
     {
-        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, moveSpeed);
+        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, moveSpeed * Time.deltaTime);
         transform.LookAt(target.transform.position);
     }
 
@@ -90,7 +91,7 @@ public abstract class EnemyBase : MonoBehaviour
             predictedPosition = predictPosition(target.transform.position, target.GetComponent<Rigidbody>().velocity, predictionChase);
             predictionTimer = 0;
         }
-        transform.position = Vector3.MoveTowards(transform.position, predictedPosition, 0.025f);
+        transform.position = Vector3.MoveTowards(transform.position, predictedPosition, moveSpeed * 0.5f * Time.deltaTime);
     }
     protected float predictionTimer = 0;
     protected Vector3 predictPosition(Vector3 targetPosition, Vector3 targetVelocity, float waitValue)
@@ -125,7 +126,7 @@ public abstract class EnemyBase : MonoBehaviour
 
     }
 
-    public void Knockback()
+    public void Knockback(Vector3 point)
     {
         /*Instruction
         1. Get direction of character - target  
@@ -134,6 +135,7 @@ public abstract class EnemyBase : MonoBehaviour
         4. Decelerate until stopped
         5. Return control to character
         */
+
     }
 
     public void Die()

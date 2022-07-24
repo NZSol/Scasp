@@ -20,6 +20,8 @@ public class TankScript : MonoBehaviour
     [SerializeField] ParticleSystem gunSmoke;
     [SerializeField] Transform cockpitScreenTankBaseRep;
     float leftThrottleVal, rightThrottleVal;
+    spinnyLightsScript lights;
+    RoundHandler rHandler;
 
     int health = 5;
 
@@ -43,6 +45,8 @@ public class TankScript : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        var god = GameObject.Find("God");
+        rHandler = god.GetComponent<RoundHandler>();
     }
 
     public void shoot(CharColours colour)
@@ -57,7 +61,7 @@ public class TankScript : MonoBehaviour
             {
                 EnemyBase enemy = hit.collider.gameObject.GetComponent<EnemyBase>();
                 if (enemy.getColour() == colour || enemy.getColour() == CharColours.Any) enemy.Die();
-                else enemy.Knockback();
+                else enemy.Knockback(hit.point);
             }
         }
         else
@@ -83,7 +87,6 @@ public class TankScript : MonoBehaviour
         turretCurrentRotation = Mathf.Lerp(turretCurrentRotation, turretRotationChangeVal, Time.deltaTime * turretRotateLerpSpeed);
         turretTransform.RotateAround(turretTransform.position, turretTransform.up, turretCurrentRotation * turretRotateSpeed * Time.deltaTime);
         cockpitScreenTankBaseRep.RotateAround(cockpitScreenTankBaseRep.position, Vector3.up, (turretCurrentRotation * -1) * turretRotateSpeed * Time.deltaTime);
-
     }
 
     private void FixedUpdate()
@@ -97,23 +100,19 @@ public class TankScript : MonoBehaviour
         BulletLineScript trailScript = bulletLine.GetComponent<BulletLineScript>();
         trailScript.point0Point = startPoint;
         if (hitSomething) trailScript.point1Point = endPoint;
-        else trailScript.point1Point = shootPoint.transform.forward * 1000;
+        else trailScript.point1Point = new Vector3(shootPoint.transform.forward.x, shootPoint.transform.forward.y, shootPoint.transform.forward.z) * 1000;
+        
     }
 
     public void reduceHealth()
     {
         health--;
-        if(health == 0)
+        if (health == 0)
         {
-            //PARTICLE EFFECT>????!??{!?>!?!?!??>!
+            Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(gameObject);
-            Invoke("reloadScene", 3);
+            rHandler.Invoke("reloadScene", 3);
             //INVOKE END GAME!!!!!!
         }
-    }
-
-    void reloadScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

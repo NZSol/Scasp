@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Small : EnemyBase
 {
+    [SerializeField] float myMoveSpeed, minChasePredictionTime, maxChasePredictionTime, minShootPredictionTime, maxShootPredictionTime;
     protected override void StartAlt()
     {
-        moveSpeed = Random.Range(0.025f, 0.04f);
-        predictionChase = Random.Range(2, 6);
-        predictionShoot = Random.Range(1, 5);
+        moveSpeed = myMoveSpeed;
+        predictionChase = Random.Range(minChasePredictionTime, maxChasePredictionTime);
+        predictionShoot = Random.Range(minShootPredictionTime, maxShootPredictionTime);
         enemyColor = CharColours.Any;
     }
 }

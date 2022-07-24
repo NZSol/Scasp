@@ -187,11 +187,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2032055368217062500}
+  - component: {fileID: 2032055368217062431}
   - component: {fileID: 2032055368217062427}
   - component: {fileID: 2032055368217062426}
   - component: {fileID: 2032055368217062425}
   - component: {fileID: 2032055368217062424}
-  - component: {fileID: 2032055368217062431}
   - component: {fileID: 2032055368217062501}
   - component: {fileID: 2032055368217062502}
   m_Layer: 0
@@ -218,6 +218,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2032055368217062431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2032055368217062430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff151ef87e56e2b4084b0f292e2db66f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movespeedCap: 10
+  acceleration: 8
+  deccelerationMultiplier: 0.8
+  shellMovementImpairment: 0.5
+  shellLoadTime: 0.25
+  theTank: {fileID: 0}
+  myRenderer: {fileID: 3914055564378899857}
+  headPlacementPoint: {fileID: 3809052063297351229}
+  anim: {fileID: 5054682149073189109}
+  circleSprite: {fileID: 4233338161416484256}
+  playerNum: 0
+  moveVector: {x: 0, y: 0}
+  interacting: 0
+  currentState: 0
+  currentZone: 0
 --- !u!33 &2032055368217062427
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -298,33 +325,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!114 &2032055368217062431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2032055368217062430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff151ef87e56e2b4084b0f292e2db66f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movespeedCap: 10
-  acceleration: 8
-  deccelerationMultiplier: 0.8
-  shellMovementImpairment: 0.5
-  shellLoadTime: 0.5
-  theTank: {fileID: 0}
-  myRenderer: {fileID: 3914055564378899857}
-  headPlacementPoint: {fileID: 3809052063297351229}
-  anim: {fileID: 5054682149073189109}
-  circleSprite: {fileID: 4233338161416484256}
-  playerNum: 0
-  moveVector: {x: 0, y: 0}
-  interacting: 0
-  currentState: 0
-  currentZone: 0
 --- !u!114 &2032055368217062501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1571,7 +1571,7 @@ GameObject:
   - component: {fileID: 8726689133020201038}
   - component: {fileID: 4233338161416484256}
   m_Layer: 0
-  m_Name: conorcircle2
+  m_Name: Colour ID Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

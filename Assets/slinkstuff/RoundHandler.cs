@@ -38,7 +38,8 @@ public class RoundHandler : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
             currentTime--;
-            timerText.text = Mathf.FloorToInt(currentTime / 60) + ":" + Mathf.Floor(currentTime % 60);
+            if (Mathf.Floor(currentTime % 60) >= 10) timerText.text = Mathf.FloorToInt(currentTime / 60) + ":" + Mathf.Floor(currentTime % 60);
+            else timerText.text = Mathf.FloorToInt(currentTime / 60) + ":0" + Mathf.Floor(currentTime % 60);
         }
         endGame();
     }
