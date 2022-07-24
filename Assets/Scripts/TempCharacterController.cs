@@ -13,6 +13,7 @@ public class TempCharacterController : MonoBehaviour
     [SerializeField] private float shellLoadTime = 0.2f;
     [SerializeField] private TankScript theTank = null;
     [SerializeField] private SkinnedMeshRenderer myRenderer;
+    [SerializeField] private Transform headPlacementPoint;
     [SerializeField] Animator anim;
     private GameObject God; //sorry liam
     private MultiplayerHandler MPHandler;
@@ -43,6 +44,7 @@ public class TempCharacterController : MonoBehaviour
         MPHandler.Players.Add(gameObject);
         transform.position = MPHandler.spawns[playerNum].position;
         myRenderer.material = MPHandler.playerColours[playerNum];
+        Instantiate(MPHandler.ears[playerNum], headPlacementPoint);
         playerNum = MPHandler.Players.Count;
         myColour = (CharColours)playerNum;
         theTank = GameObject.Find("Tank").GetComponent<TankScript>();
