@@ -27,7 +27,7 @@ public class Projectile : MonoBehaviour
     {
         if (collision.gameObject.tag == "Tank")
         {
-            collision.getComponent<TankScript>().reduceHealth();
+            collision.gameObject.GetComponent<TankScript>().reduceHealth();
         }
 
     }
