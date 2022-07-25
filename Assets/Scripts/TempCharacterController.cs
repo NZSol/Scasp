@@ -48,7 +48,7 @@ public class TempCharacterController : MonoBehaviour
         myRenderer.material = MPHandler.playerColours[playerNum];
         Instantiate(MPHandler.ears[playerNum], headPlacementPoint);
         circleSprite.color = MPHandler.playerUIColours[playerNum];
-        playerNum = MPHandler.Players.Count;
+        playerNum = MPHandler.Players.Count - 1;
         myColour = (CharColours)playerNum;
         theTank = GameObject.Find("Tank").GetComponent<TankScript>();
         rb = gameObject.GetComponent<Rigidbody>();
@@ -300,6 +300,7 @@ public class TempCharacterController : MonoBehaviour
 
     IEnumerator waitForSeconds(float seconds)
     {
+        alreadyShot = true;
         Debug.Log("tank shooting");
         yield return new WaitForSeconds(seconds);
         theTank.shoot(myColour);

@@ -27,7 +27,7 @@ public class spinnyLightsScript : MonoBehaviour
         spinnyLightObject.SetActive(true);
         foreach(Light currentLight in spinnyLights)
         {
-            currentLight.color = playerLightColours[(int)character - 1];
+            currentLight.color = playerLightColours[(int)character];
         }
         yield return new WaitForSeconds(seconds);
         spinnyLightObject.SetActive(false);
