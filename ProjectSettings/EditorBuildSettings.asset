@@ -5,12 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/LiamTestScene.unity
-    guid: c19a3b154164d3644aac650da4c6fe46
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/slinkstuff/slinkfusion.unity
     guid: 9364d0d9c7f90ce42b59985527489152

@@ -22,6 +22,7 @@ public class TankScript : MonoBehaviour
     float leftThrottleVal, rightThrottleVal;
     spinnyLightsScript lights;
     RoundHandler rHandler;
+    [SerializeField] GameObject youDiedUI;
 
     int health = 5;
 
@@ -110,9 +111,9 @@ public class TankScript : MonoBehaviour
         if (health == 0)
         {
             Instantiate(explosion, transform.position, Quaternion.identity);
-            Destroy(gameObject);
+            youDiedUI.SetActive(true);
             rHandler.Invoke("reloadScene", 3);
-            //INVOKE END GAME!!!!!!
+            Destroy(gameObject);
         }
     }
 }
