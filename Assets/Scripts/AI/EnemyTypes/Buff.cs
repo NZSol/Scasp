@@ -9,16 +9,18 @@ public class Buff : EnemyBase
     [SerializeField] SkinnedMeshRenderer myRenderer;
     [SerializeField] SpriteRenderer circleSprite;
     [SerializeField] float myMoveSpeed, minChasePredictionTime, maxChasePredictionTime, minShootPredictionTime, maxShootPredictionTime;
+    MultiplayerHandler mpHandler;
 
     protected override void StartAlt()
     {
+        mpHandler = GameObject.Find("God").GetComponent<MultiplayerHandler>();
         gameObject.GetComponent<Renderer>().material = mats[Random.Range(0, mats.Length)];
         Material myMat = myRenderer.material;
 
         predictionChase = Random.Range(minChasePredictionTime, maxChasePredictionTime);
         predictionShoot = Random.Range(minShootPredictionTime, maxShootPredictionTime);
 
-        enemyColor = (CharColours)Random.Range(0, 4);
+        enemyColor = (CharColours)Random.Range(0, mpHandler.Players.Count);
         //Debug.Log(enemyColor);
         circleSprite.color = GameObject.Find("God").GetComponent<MultiplayerHandler>().playerUIColours[(int)enemyColor];
         switch (enemyColor)

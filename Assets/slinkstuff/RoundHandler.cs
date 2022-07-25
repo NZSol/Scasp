@@ -26,6 +26,7 @@ public class RoundHandler : MonoBehaviour
             StartCoroutine(timerCoroutine());
             GetComponent<PlayerInputManager>().DisableJoining();
             MPHandler.gameStarted = true;
+            GetComponent<tutorialTogglerScript>().turnTutorialTextOff();
             helpText.SetActive(false);
             timerObject.SetActive(true);
         }

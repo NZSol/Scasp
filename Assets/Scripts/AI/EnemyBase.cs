@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour
 {
-    protected CharColours enemyColor = CharColours.Any;
+    [SerializeField] protected CharColours enemyColor = CharColours.Any;
     protected float distanceFromTarget;
     protected float predictionChase = 3, predictionShoot = 1.5f;
     protected float moveSpeed;
@@ -91,9 +91,12 @@ public abstract class EnemyBase : MonoBehaviour
             predictedPosition = predictPosition(target.transform.position, target.GetComponent<Rigidbody>().velocity, predictionChase);
             predictionTimer = 0;
         }
-        transform.position = Vector3.MoveTowards(transform.position, predictedPosition, moveSpeed * 0.5f * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, predictedPosition, moveSpeed * Time.deltaTime);
+        transform.LookAt(target.transform.position);
     }
+
     protected float predictionTimer = 0;
+
     protected Vector3 predictPosition(Vector3 targetPosition, Vector3 targetVelocity, float waitValue)
     {
         float predictionDeviation = Random.Range(0.5f, 2f);

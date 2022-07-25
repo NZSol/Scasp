@@ -16,29 +16,36 @@ public class TankScript : MonoBehaviour
 
     float turretCurrentRotation, turretRotationChangeVal;
     [SerializeField] float turretRotateSpeed , turretRotateLerpSpeed;
-    [SerializeField] GameObject explosion, bulletTrail;
+    [SerializeField] GameObject explosion, bigExplosion, bulletTrail;
     [SerializeField] ParticleSystem gunSmoke;
     [SerializeField] Transform cockpitScreenTankBaseRep;
     float leftThrottleVal, rightThrottleVal;
     spinnyLightsScript lights;
     RoundHandler rHandler;
     [SerializeField] GameObject youDiedUI;
+    [SerializeField] LayerMask stuffShotsDontGoThrough;
+    [SerializeField] Slider healthSlider, LThrottleSlider, RThrottleSlider;
+
+    bool leftThrottleReceivedInput, rightThrottleReceivedInput, turretReceivedInput;
 
     int health = 5;
 
     #region public values
     public void setLeftTreadThrottleVal(float value)
     {
+        leftThrottleReceivedInput = true;
         leftThrottleVal = value;
     }
 
     public void setRightTreadThrottleVal(float value)
     {
+        rightThrottleReceivedInput = true;
         rightThrottleVal = value;
     }
 
     public void setTurretTurnValue(float value)
     {
+        turretReceivedInput = true;
         turretRotationChangeVal = value;
     }
     #endregion
@@ -54,7 +61,7 @@ public class TankScript : MonoBehaviour
     {
         gunSmoke.Play();
         RaycastHit hit;
-        if (Physics.Raycast(shootPoint.transform.position, shootPoint.transform.forward, out hit, Mathf.Infinity))
+        if (Physics.Raycast(shootPoint.transform.position, shootPoint.transform.forward, out hit, Mathf.Infinity, stuffShotsDontGoThrough))
         {
             createNewBulletLine(shootPoint.position, hit.point, true);
             Instantiate(explosion, hit.point, Quaternion.identity);
@@ -75,7 +82,6 @@ public class TankScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         //lerp up seperate throttles, don't need to lerp full accel that way
         rightTreadAccelValue = Mathf.Lerp(rightTreadAccelValue, rightThrottleVal, Time.fixedDeltaTime * accelMultiplier);
         leftTreadAccelValue = Mathf.Lerp(leftTreadAccelValue, leftThrottleVal, Time.fixedDeltaTime * accelMultiplier);
@@ -88,6 +94,17 @@ public class TankScript : MonoBehaviour
         turretCurrentRotation = Mathf.Lerp(turretCurrentRotation, turretRotationChangeVal, Time.deltaTime * turretRotateLerpSpeed);
         turretTransform.RotateAround(turretTransform.position, turretTransform.up, turretCurrentRotation * turretRotateSpeed * Time.deltaTime);
         cockpitScreenTankBaseRep.RotateAround(cockpitScreenTankBaseRep.position, Vector3.up, (turretCurrentRotation * -1) * turretRotateSpeed * Time.deltaTime);
+
+        LThrottleSlider.value = leftTreadAccelValue;
+        RThrottleSlider.value = rightTreadAccelValue;
+
+        if (!leftThrottleReceivedInput) leftThrottleVal = 0;
+        if (!rightThrottleReceivedInput) rightThrottleVal = 0;
+        if (!turretReceivedInput) turretRotationChangeVal = 0;
+        leftThrottleReceivedInput = false;
+        rightThrottleReceivedInput = false;
+        turretReceivedInput = false;
+
     }
 
     private void FixedUpdate()
@@ -108,9 +125,11 @@ public class TankScript : MonoBehaviour
     public void reduceHealth()
     {
         health--;
+        healthSlider.value = health;
         if (health == 0)
         {
-            Instantiate(explosion, transform.position, Quaternion.identity);
+            GameObject.Find("User Interface/TimerBG").SetActive(false);
+            Instantiate(bigExplosion, transform.position, Quaternion.identity);
             youDiedUI.SetActive(true);
             rHandler.Invoke("reloadScene", 3);
             Destroy(gameObject);

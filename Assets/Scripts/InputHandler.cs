@@ -6,10 +6,12 @@ using UnityEngine.InputSystem;
 public class InputHandler : MonoBehaviour
 {
     private TempCharacterController myMainScript;
+    tutorialTogglerScript tutToggler;
 
     void Awake()
     {
         myMainScript = gameObject.GetComponent<TempCharacterController>();
+        tutToggler = GameObject.Find("God").GetComponent<tutorialTogglerScript>();
     }
 
     public void startGame(InputAction.CallbackContext context)
@@ -21,6 +23,14 @@ public class InputHandler : MonoBehaviour
             {
                 god.GetComponent<RoundHandler>().startGame();
             }
+        }
+    }
+
+    public void toggleTutorial(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            tutToggler.toggleTutorialTexts();
         }
     }
 

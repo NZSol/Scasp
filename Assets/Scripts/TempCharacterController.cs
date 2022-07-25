@@ -16,6 +16,7 @@ public class TempCharacterController : MonoBehaviour
     [SerializeField] private Transform headPlacementPoint;
     [SerializeField] Animator anim;
     [SerializeField] private SpriteRenderer circleSprite;
+    bool alreadyShot;
     private GameObject God; //sorry liam
     private MultiplayerHandler MPHandler;
     public int playerNum = 0;
@@ -177,6 +178,7 @@ public class TempCharacterController : MonoBehaviour
     #region IDLE Functions
     private void IDLEUpdate()
     {
+        alreadyShot = false;
         anim.SetInteger("STATE", 0);
         /*Change to MOVE*/ if (moveVector != Vector2.zero)
         {
@@ -262,25 +264,32 @@ public class TempCharacterController : MonoBehaviour
             targetZone.occupied = false;
             currentZone = Zone.zoneKind.NULL;
             currentState = playerState.IDLE;
+            rb.isKinematic = false;
         }
         switch (currentZone)
         {
             case Zone.zoneKind.AIMING:
                 float aimOutput = moveVector.x;
                 theTank.setTurretTurnValue(aimOutput * 5);
+                rb.isKinematic = true;
+                anim.SetInteger("STATE", 0);
                 break;
             case Zone.zoneKind.AMMO:
                 break;
             case Zone.zoneKind.BARREL:
-                StartCoroutine(waitForSeconds(shellLoadTime));
+                if(!alreadyShot) StartCoroutine(waitForSeconds(shellLoadTime));
                 break;
             case Zone.zoneKind.TREADLEFT:
                 float leftOutput = moveVector.y;
                 theTank.setLeftTreadThrottleVal(leftOutput * 5);
+                rb.isKinematic = true;
+                anim.SetInteger("STATE", 0);
                 break;
             case Zone.zoneKind.TREADRIGHT:
                 float rightOutput = moveVector.y;
                 theTank.setRightTreadThrottleVal(rightOutput * 5);
+                rb.isKinematic = true;
+                anim.SetInteger("STATE", 0);
                 break;
         }
     }
@@ -291,6 +300,7 @@ public class TempCharacterController : MonoBehaviour
 
     IEnumerator waitForSeconds(float seconds)
     {
+        Debug.Log("tank shooting");
         yield return new WaitForSeconds(seconds);
         theTank.shoot(myColour);
         targetZone.occupied = false;
