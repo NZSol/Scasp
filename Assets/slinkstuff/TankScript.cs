@@ -25,6 +25,9 @@ public class TankScript : MonoBehaviour
     [SerializeField] GameObject youDiedUI;
     [SerializeField] LayerMask stuffShotsDontGoThrough;
     [SerializeField] Slider healthSlider, LThrottleSlider, RThrottleSlider;
+    [SerializeField] AudioSource aud, engineAudio;
+    [SerializeField] AudioClip tankShotSound;
+
 
     bool leftThrottleReceivedInput, rightThrottleReceivedInput, turretReceivedInput;
 
@@ -60,6 +63,7 @@ public class TankScript : MonoBehaviour
     public void shoot(CharColours colour)
     {
         gunSmoke.Play();
+        aud.PlayOneShot(tankShotSound);
         RaycastHit hit;
         if (Physics.Raycast(shootPoint.transform.position, shootPoint.transform.forward, out hit, Mathf.Infinity, stuffShotsDontGoThrough))
         {
@@ -94,6 +98,8 @@ public class TankScript : MonoBehaviour
         turretCurrentRotation = Mathf.Lerp(turretCurrentRotation, turretRotationChangeVal, Time.deltaTime * turretRotateLerpSpeed);
         turretTransform.RotateAround(turretTransform.position, turretTransform.up, turretCurrentRotation * turretRotateSpeed * Time.deltaTime);
         cockpitScreenTankBaseRep.RotateAround(cockpitScreenTankBaseRep.position, Vector3.up, (turretCurrentRotation * -1) * turretRotateSpeed * Time.deltaTime);
+
+        calculateEngineAudioPan();
 
         LThrottleSlider.value = leftTreadAccelValue;
         RThrottleSlider.value = rightTreadAccelValue;
@@ -134,5 +140,19 @@ public class TankScript : MonoBehaviour
             rHandler.Invoke("reloadScene", 3);
             Destroy(gameObject);
         }
+    }
+
+    void calculateEngineAudioPan()
+    {
+        float LMagnitude, RMagnitude;
+        //get magnitudes of both throttles (so if -1 the value is still 1)
+        if (leftTreadAccelValue < 0) LMagnitude = leftTreadAccelValue * -1;
+        else LMagnitude = leftTreadAccelValue;
+
+        if (rightTreadAccelValue < 0) RMagnitude = rightTreadAccelValue * -1;
+        else RMagnitude = rightTreadAccelValue;
+
+        engineAudio.panStereo = (RMagnitude - LMagnitude) / 5 * 0.5f;
+        engineAudio.pitch = 1 + (RMagnitude + LMagnitude) / 5 * 0.5f;
     }
 }
