@@ -50,7 +50,6 @@ public abstract class EnemyBase : MonoBehaviour
     }
 
 
-
     protected void Update()
     {
         distanceFromTarget = Vector3.Distance(gameObject.transform.position, target.transform.position);
@@ -60,10 +59,12 @@ public abstract class EnemyBase : MonoBehaviour
         }
         else if (inRange(distanceFromTarget) && !inShootRange(distanceFromTarget) && !condition())
         {
+            print("Hunting");
             Hunt();
         }
         else if (!inRange(distanceFromTarget) && !condition())
         {
+            print("Following");
             Follow();
         }
     }
@@ -92,15 +93,23 @@ public abstract class EnemyBase : MonoBehaviour
             predictionTimer = 0;
         }
         transform.position = Vector3.MoveTowards(transform.position, predictedPosition, moveSpeed * Time.deltaTime);
-        transform.LookAt(target.transform.position);
+        transform.LookAt(predictedPosition);
     }
 
     protected float predictionTimer = 0;
 
     protected Vector3 predictPosition(Vector3 targetPosition, Vector3 targetVelocity, float waitValue)
     {
-        float predictionDeviation = Random.Range(0.5f, 2f);
+        RaycastHit hit;
+        float predictionDeviation = Random.Range(0.25f, 1.5f);
         Vector3 prediction = targetPosition + targetVelocity * (waitValue * predictionDeviation);
+        if(Physics.Raycast(transform.position, prediction - transform.position * 100, out hit))
+        {
+            if (hit.transform.name.Contains("Wall"))
+            {
+                prediction += transform.right * 25;
+            }
+        }
         return prediction;
     }
    
@@ -109,12 +118,14 @@ public abstract class EnemyBase : MonoBehaviour
     {
         Vector3 prediction = predictPosition(target.transform.position, target.GetComponent<Rigidbody>().velocity, predictionShoot);
         predictionTimer += Time.deltaTime;
-        if(predictionTimer > predictionShoot)
+        if (predictionTimer > predictionShoot)
         {
+            Vector3 fireLine = prediction - transform.position;
             print("hit");
             Projectile projectileClass = Instantiate(bullet, transform.position + transform.forward, transform.rotation).GetComponent<Projectile>();
-            projectileClass.SetDirection(transform.forward);
+            projectileClass.SetDirection(fireLine/5);
             predictionTimer -= predictionTimer;
+            
         }
 
         /*Instructions{

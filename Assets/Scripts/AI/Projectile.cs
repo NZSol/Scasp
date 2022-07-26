@@ -31,8 +31,9 @@ public class Projectile : MonoBehaviour
             if(!appliedDamage) collision.gameObject.GetComponent<TankScript>().reduceHealth();
             appliedDamage = true;
             Instantiate(myFX, transform.position, Quaternion.identity);
-            Destroy(gameObject);
         }
+        print("hit");
+        Destroy(gameObject);
 
     }
 }
