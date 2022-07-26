@@ -16,6 +16,7 @@ public class TempCharacterController : MonoBehaviour
     [SerializeField] private Transform headPlacementPoint;
     [SerializeField] Animator anim;
     [SerializeField] private SpriteRenderer circleSprite;
+    [SerializeField] private playerSoundHandler soundHandler;
     bool alreadyShot;
     private GameObject God; //sorry liam
     private MultiplayerHandler MPHandler;
@@ -80,6 +81,7 @@ public class TempCharacterController : MonoBehaviour
                         {
                             currentZone = Zone.zoneKind.AMMO;
                             targetZone = other.GetComponent<Zone>();
+                            soundHandler.playPickUpShellSound();
                             currentState = playerState.IDLESHELL;
                         }
                         break;
@@ -89,6 +91,7 @@ public class TempCharacterController : MonoBehaviour
                             currentZone = Zone.zoneKind.BARREL;
                             other.GetComponent<Zone>().occupied = true;
                             targetZone = other.GetComponent<Zone>();
+                            soundHandler.playLoadShellSound();
                             currentState = playerState.MODULECONTROL;
                             //slinky here this does the spinny lights!!
                             God.GetComponent<spinnyLightsScript>().activateSpinnyLights(myColour, 3);

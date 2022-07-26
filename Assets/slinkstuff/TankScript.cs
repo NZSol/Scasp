@@ -25,8 +25,9 @@ public class TankScript : MonoBehaviour
     [SerializeField] GameObject youDiedUI;
     [SerializeField] LayerMask stuffShotsDontGoThrough;
     [SerializeField] Slider healthSlider, LThrottleSlider, RThrottleSlider;
-    [SerializeField] AudioSource aud, engineAudio;
-    [SerializeField] AudioClip tankShotSound;
+    [SerializeField] AudioSource aud, engineAudio, turretAudio;
+    [SerializeField] AudioClip tankShotSound, deathExplosionSound;
+    [SerializeField] float turretAudioLerpSpeed;
 
 
     bool leftThrottleReceivedInput, rightThrottleReceivedInput, turretReceivedInput;
@@ -100,6 +101,7 @@ public class TankScript : MonoBehaviour
         cockpitScreenTankBaseRep.RotateAround(cockpitScreenTankBaseRep.position, Vector3.up, (turretCurrentRotation * -1) * turretRotateSpeed * Time.deltaTime);
 
         calculateEngineAudioPan();
+        calculateTurretAudio();
 
         LThrottleSlider.value = leftTreadAccelValue;
         RThrottleSlider.value = rightTreadAccelValue;
@@ -138,6 +140,8 @@ public class TankScript : MonoBehaviour
             Instantiate(bigExplosion, transform.position, Quaternion.identity);
             youDiedUI.SetActive(true);
             rHandler.Invoke("reloadScene", 3);
+            engineAudio.volume = 0;
+            aud.PlayOneShot(deathExplosionSound);
             Destroy(gameObject);
         }
     }
@@ -154,5 +158,16 @@ public class TankScript : MonoBehaviour
 
         engineAudio.panStereo = (RMagnitude - LMagnitude) / 5 * 0.5f;
         engineAudio.pitch = 1 + (RMagnitude + LMagnitude) / 5 * 0.5f;
+    }
+
+    void calculateTurretAudio()
+    {
+        float turretMagnitude;
+        if (turretRotationChangeVal < 0) turretMagnitude = turretRotationChangeVal * -1;
+        else turretMagnitude = turretRotationChangeVal;
+
+        turretAudio.volume =  Mathf.Lerp(turretAudio.volume, (turretMagnitude / 5) * 0.12f, Time.deltaTime * turretAudioLerpSpeed);
+        turretAudio.pitch = Mathf.Lerp(turretAudio.pitch, 1 + (turretMagnitude / 5), Time.deltaTime * turretAudioLerpSpeed);
+
     }
 }
