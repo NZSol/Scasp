@@ -97,7 +97,7 @@ public class TankScript : MonoBehaviour
 
         //turret rotation
         turretCurrentRotation = Mathf.Lerp(turretCurrentRotation, turretRotationChangeVal, Time.deltaTime * turretRotateLerpSpeed);
-        turretTransform.RotateAround(turretTransform.position, turretTransform.up, turretCurrentRotation * turretRotateSpeed * Time.deltaTime);
+        turretTransform.RotateAround(turretTransform.position, turretTransform.forward, turretCurrentRotation * turretRotateSpeed * Time.deltaTime);
         cockpitScreenTankBaseRep.RotateAround(cockpitScreenTankBaseRep.position, Vector3.up, (turretCurrentRotation * -1) * turretRotateSpeed * Time.deltaTime);
 
         calculateEngineAudioPan();
