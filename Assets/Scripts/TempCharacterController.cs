@@ -39,22 +39,23 @@ public class TempCharacterController : MonoBehaviour
     private CharColours myColour = CharColours.Red;
     [SerializeField] playerState currentState = playerState.IDLE;
     [SerializeField] Zone.zoneKind currentZone = Zone.zoneKind.NULL;
-    void Awake()
+    void Awake() 
     {
-        God = GameObject.Find("God");
-        MPHandler = God.GetComponent<MultiplayerHandler>();
-        playerNum = GetComponent<PlayerInput>().user.index;
-        MPHandler.Players.Add(gameObject);
-        transform.position = MPHandler.spawns[playerNum].position;
-        myRenderer.material = MPHandler.playerColours[playerNum];
-        Instantiate(MPHandler.ears[playerNum], headPlacementPoint);
-        circleSprite.color = MPHandler.playerUIColours[playerNum];
-        playerNum = MPHandler.Players.Count - 1;
-        myColour = (CharColours)playerNum;
-        theTank = GameObject.Find("Tank").GetComponent<TankScript>();
-        rb = gameObject.GetComponent<Rigidbody>();
-        currentState = playerState.IDLE;
+        God = GameObject.Find("God"); //Attach God script, pretty much exclusively for spinny lights later for some reason. Should rework that to run on tank.
+        theTank = GameObject.Find("Tank").GetComponent<TankScript>(); //Attach tank
+        MPHandler = God.GetComponent<MultiplayerHandler>(); //Input handler for var handling
+        playerNum = GetComponent<PlayerInput>().user.index;  //This is only ever used within this Awake function, could clean.
+        rb = gameObject.GetComponent<Rigidbody>(); //Get rigidbody of self
+        MPHandler.Players.Add(gameObject); //Handling vars for multiplayer
+        myColour = (CharColours)playerNum; //This is for matching player to shell to enemy type.
+        myRenderer.material = MPHandler.playerColours[playerNum]; //visuals - texture
+        Instantiate(MPHandler.ears[playerNum], headPlacementPoint); //visuals - model parts
+        circleSprite.color = MPHandler.playerUIColours[playerNum]; //visuals - circle
+        rb.position = MPHandler.spawns[playerNum].position; //Moving prefab to their spawn on instantiation
+        //playerNum = MPHandler.Players.Count - 1; //Unclear, isn't this set already earlier?
+        //currentState = playerState.IDLE; //Set state to idle by default. This shouldn't be necessary.
     }
+
 
     #region General functions and initialization of state functions
 
@@ -114,6 +115,23 @@ public class TempCharacterController : MonoBehaviour
                             targetZone = other.GetComponent<Zone>();
                             currentState = playerState.MODULECONTROL;
                         }
+                        break;
+                    case Zone.zoneKind.TREADBOTH:
+                        if (currentState != playerState.IDLESHELL && currentState != playerState.MOVESHELL)
+                        {
+                            currentZone = Zone.zoneKind.TREADBOTH;
+                            other.GetComponent<Zone>().occupied = true;
+                            targetZone = other.GetComponent<Zone>();
+                            currentState = playerState.MODULECONTROL;
+                        }
+                        break;
+                    case Zone.zoneKind.FIRE:
+                      currentZone = Zone.zoneKind.FIRE;
+                      other.GetComponent<Zone>().occupied = true;
+                      targetZone = other.GetComponent<Zone>();
+                      currentState = playerState.MODULECONTROL;
+                      //slinky here this does the spinny lights!!
+                      God.GetComponent<spinnyLightsScript>().activateSpinnyLights(myColour, 3);
                         break;
                 }
             }
@@ -293,6 +311,18 @@ public class TempCharacterController : MonoBehaviour
                 theTank.setRightTreadThrottleVal(rightOutput * 5);
                 rb.isKinematic = true;
                 anim.SetInteger("STATE", 0);
+                break;
+            case Zone.zoneKind.TREADBOTH:
+                float yInput = moveVector.y;
+                float xInput = moveVector.x;
+                theTank.setRightTreadThrottleVal((moveVector.y - moveVector.x) * 5);
+                theTank.setLeftTreadThrottleVal((moveVector.y + moveVector.x) * 5);
+                rb.isKinematic = true;
+                anim.SetInteger("STATE", 0);
+                break;
+            case Zone.zoneKind.FIRE:
+                //cooldown needs to be in here
+                if (!alreadyShot) StartCoroutine(waitForSeconds(shellLoadTime / 4));
                 break;
         }
     }

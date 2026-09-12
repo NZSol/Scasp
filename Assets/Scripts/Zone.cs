@@ -11,7 +11,9 @@ public class Zone : MonoBehaviour
         TREADLEFT,
         AIMING,
         AMMO,
-        BARREL
+        BARREL,
+        TREADBOTH, //For low player count
+        FIRE//For low player count
     }
     public zoneKind myZone;
     public bool occupied = false;
